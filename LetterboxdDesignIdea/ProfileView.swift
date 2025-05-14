@@ -2,10 +2,11 @@ import SwiftUI
 
 struct ProfileView: View {
     @State private var selectedTab: String = "Profile"
-    let headerHeight: CGFloat = 110
+    @State private var navigateToInvites = false
+    let headerHeight: CGFloat = 80
     
     var stickyHeader: some View {
-        VStack(spacing: 12) {
+        VStack(spacing: 10) {
             HStack {
                 Image(systemName: "gearshape")
                     .foregroundColor(.white)
@@ -21,22 +22,22 @@ struct ProfileView: View {
                 
                 Image(systemName: "line.3.horizontal")
                     .foregroundColor(.white)
+                
+                
             }
-            
-            HStack(spacing: 16) {
-                ForEach(["Profile", "Diary", "Lists", "Watchlist"], id: \.self) { tab in
+            // the design decision to remove the diary feature at the top in place of invites I think helps to reduce clutter and improves the sense of flow as people generally habituate to navigate to the diary tag from the row view at the bottom anyway
+            HStack(spacing: 2) {
+                ForEach(["Profile", "Lists", "Watchlist", "Invites"], id: \.self) { tab in
                     tabButton(for: tab)
                 }
             }
-            .padding(.horizontal)
             .background(Color(UIColor.systemGray6).opacity(0.2))
             .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .padding(.horizontal)
-        .padding(.top, 10)
         .padding(.bottom, 12)
         .background(Color.black)
-        .shadow(color: .black.opacity(0.2), radius: 10, y: 5)
+        .shadow(color: .black.opacity(0.2), radius: 10, y: 8)
     }
     
     // MARK: - Subview as a private method
@@ -51,11 +52,14 @@ struct ProfileView: View {
             .padding(.vertical, 6)
             .padding(.horizontal, 14)
             .background(
-                Capsule()
+                RoundedRectangle(cornerRadius: 8)
                     .fill(isSelected ? Color.gray.opacity(0.4) : Color.clear)
             )
             .onTapGesture {
                 selectedTab = tab
+                if tab == "Invites" {
+                    navigateToInvites = true
+                }
             }
     }
     
@@ -84,9 +88,7 @@ struct ProfileView: View {
             ZStack(alignment: .top) {
                 ScrollView {
                     VStack(alignment: .center, spacing: 16) {
-                        
-                        // Removed previous top HStack and tab bar
-                        
+                                                
                         // Header
                         VStack(spacing: 8) {
                             Image(systemName: "person.crop.circle.fill")
@@ -130,7 +132,6 @@ struct ProfileView: View {
                                 .foregroundColor(.gray)
                                 .padding(.leading)
 
-                            ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 12) {
                                     ForEach(0..<4) { _ in
                                         Rectangle()
@@ -140,10 +141,10 @@ struct ProfileView: View {
                                     }
                                 }
                                 .padding(.horizontal)
-                            }
+                            
                         }
 
-                        // Recent Activity
+                        // Recent Activity -> small adjustment but I think it improves the design if you can just keep scrolling through maybe the last 20 posters you watched (just a nice small detail that I think really helps add a layer of enjoyment and delight) -> and because it's a pyshcology paper being able to have even more obvious access to see your recent history visually is a great way of building a sense of identity
                         VStack(alignment: .leading, spacing: 8) {
                             Text("RECENT ACTIVITY")
                                 .font(.caption)
@@ -153,7 +154,7 @@ struct ProfileView: View {
 
                             ScrollView(.horizontal, showsIndicators: false) {
                                 HStack(spacing: 12) {
-                                    ForEach(0..<4) { _ in
+                                    ForEach(0..<20) { _ in
                                         Rectangle()
                                             .fill(Color.gray.opacity(0.3))
                                             .frame(width: 80, height: 120)
@@ -174,8 +175,8 @@ struct ProfileView: View {
                                 let height = CGFloat(halfStar) * 6
                                 VStack {
                                     Rectangle()
-                                        .fill(Color.blue)
-                                        .frame(width: 12, height: height)
+                                        .fill(Color.gray)
+                                        .frame(width: 24, height: height)
                                     Text("\(Double(halfStar) * 0.5, specifier: "%.1f")★")
                                         .font(.caption2)
                                         .foregroundColor(.gray)
@@ -199,16 +200,19 @@ struct ProfileView: View {
                         }
                         .padding(.horizontal)
                         
-                        Spacer(minLength: 32)
                     }
                     .padding(.top, headerHeight)
                 }
                 
                 stickyHeader
             }
+            .navigationDestination(isPresented: $navigateToInvites) {
+                FlipCardView()
+            }
         }
     }
 }
+
 
 #Preview {
     ProfileView()

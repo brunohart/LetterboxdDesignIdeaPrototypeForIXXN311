@@ -11,8 +11,10 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            Text("Home View (Popular, Friends, etc.)")
-                .navigationTitle("Home")
+           Image("HomePage")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
         }
     }
 }

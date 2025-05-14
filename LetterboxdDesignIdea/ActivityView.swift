@@ -11,8 +11,10 @@ import SwiftUI
 struct ActivityView: View {
     var body: some View {
         NavigationStack {
-            Text("Activity View")
-                .navigationTitle("Activity")
+            Image("ActivityPage")
+                 .resizable()
+                 .scaledToFill()
+                 .ignoresSafeArea()
         }
     }
 }

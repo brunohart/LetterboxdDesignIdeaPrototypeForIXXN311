@@ -8,39 +8,46 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    init() {
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = UIColor.black
+        
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
+    }
+    
     var body: some View {
         TabView {
             HomeView()
                 .tabItem {
                     Image(systemName: "rectangle.stack.fill")
-                    Text("Films")
                 }
 
             SearchView()
                 .tabItem {
                     Image(systemName: "magnifyingglass")
-                    Text("Search")
                 }
 
             CreateView()
                 .tabItem {
                     Image(systemName: "plus.circle")
-                    Text("Create")
                 }
 
             ActivityView()
                 .tabItem {
                     Image(systemName: "bolt.fill")
-                    Text("Activity")
                 }
 
             ProfileView()
                 .tabItem {
                     Image(systemName: "person.crop.circle")
-                    Text("Profile")
                 }
         }
+    
     }
+    
 }
 
 #Preview {

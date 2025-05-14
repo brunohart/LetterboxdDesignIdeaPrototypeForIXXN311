@@ -13,8 +13,10 @@ struct SearchView : View {
     
     var body: some View {
         NavigationStack{
-            Text("Search View")
-                .navigationTitle("Search")
+             Image("SearchPage")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
         }
     }
 }
